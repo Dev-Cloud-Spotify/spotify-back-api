@@ -1,5 +1,5 @@
 //Exemple controller
-import song from '../models/song.models';
+import Song from '../models/song.models';
 
 const songController = {
 
@@ -9,29 +9,29 @@ const songController = {
 
     createSong: async (req, res) => {
         const { name, lastName, albums } = req.body;
-        const newSong = new song({ name, lastName, albums });
+        const newSong = new Song({ name, lastName, albums });
         await newSong.save();
         res.status(201).json(newSong);
     },
 
-    getAllSongs: async (req, res) => {
-        const songs = await song.find();
+    getSongs: async (req, res) => {
+        const songs = await Song.find();
         res.json(songs);
     },
 
     getSongById: async (req, res) => {
-        const song = await song.findById(req.params.id);
+        const song = await Song.findById(req.params.id);
         res.json(song);
     },
 
     updateSongById: async (req, res) => {
         const { name, lastName, albums } = req.body;
-        const updatedSong = await song.findByIdAndUpdate(req.params.id, { name, lastName, albums }, { new: true });
+        const updatedSong = await Song.findByIdAndUpdate(req.params.id, { name, lastName, albums }, { new: true });
         res.json(updatedSong);
     },
 
     deleteSongById: async (req, res) => {
-        const deletedSong = await song.findByIdAndDelete(req.params.id);
+        const deletedSong = await Song.findByIdAndDelete(req.params.id);
         res.json(deletedSong);
     },
 
