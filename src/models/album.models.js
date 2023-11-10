@@ -2,8 +2,8 @@ import mongoose, { Mongoose } from 'mongoose';
 
 const AlbumSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  artist: { type: Mongoose.Schema.Types.ObjectId, ref:'Artist' , required: false },
-  songs: [{ type: Mongoose.Schema.Types.ObjectId, ref:'Song' }],
+  artist: { type: mongoose.Schema.Types.ObjectId, ref:'Artist' , required: false },
+  songs: [{ type: mongoose.Schema.Types.ObjectId, ref:'Song' }],
   converImage : { type: String, required: false },
 });
 

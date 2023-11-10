@@ -4,8 +4,8 @@ import express from 'express';
 
 const router = express.Router();
 
-import exempleRoutes from './exemple.routes';
+import songRoutes from './song.routes';
 
-router.use('/exemple', exempleRoutes);
+router.use('/songs', songRoutes);
 
 export default router;

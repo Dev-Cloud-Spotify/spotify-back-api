@@ -6,8 +6,8 @@ const songSchema = new mongoose.Schema({
   autor: { type: String, required:true},
   date_out: { type: Date, required: true },
   url: { type: String, required:false},
-  album: { type: Mongoose.Schema.Types.ObjectId, ref:'Album' , required: false },
-  artist: { type: Mongoose.Schema.Types.ObjectId, ref:'Album' , required: false },
+  album: { type: mongoose.Schema.Types.ObjectId, ref:'Album' , required: false },
+  artist: { type: mongoose.Schema.Types.ObjectId, ref:'Album' , required: false },
   listens: { type: Number, default: 0},
 });
 
