@@ -1,20 +1,23 @@
 //Exemple controller
-import Exemple from '../models/Exemple';
+import artist from '../models/artist';
+import music from '../models/music';
+import user from '../models/user';
 
 const exempleController = {
 
     test: (req, res) => {
-        res.send('Exemple controller works');
+        res.send('Controller test Ok');
     },
 
     // Create a new exemple
     createExemple: async (req, res) => {
         try {
-        const { name, email } = req.body;
+        const { name, email, password } = req.body;
     
-        const newExemple = new Exemple({
+        const newExemple = new user({
             name,
             email,
+            password,
         });
     
         const savedExemple = await newExemple.save();
