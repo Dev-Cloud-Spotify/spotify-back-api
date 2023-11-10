@@ -1,10 +1,9 @@
 //exemple route
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-
-const exempleController = require('../controllers/Exemple.controller');
+import exempleController from '../controllers/Exemple.controller';
 
 router.get('/test', exempleController.test);
 router.post('/exemple', exempleController.createExemple);
 
-module.exports = router;
+export default router;

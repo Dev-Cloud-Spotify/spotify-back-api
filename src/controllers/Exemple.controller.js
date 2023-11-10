@@ -1,5 +1,5 @@
 //Exemple controller
-const Exemple = require('../models/Exemple');
+import Exemple from '../models/Exemple';
 
 const exempleController = {
 
@@ -79,4 +79,4 @@ const exempleController = {
     }
 };
 
-module.exports = exempleController;
+export default exempleController;

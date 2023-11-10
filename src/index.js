@@ -1,18 +1,20 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-require('dotenv').config();
+import express from 'express';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import colors from '@colors/colors';
+import router from './routes/router.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 
-const colors = require('@colors/colors');
-
 app.use(bodyParser.json());
 
-
 const cluster = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority`
+
 // Connect to MongoDB
 mongoose.connect(cluster);
 
@@ -23,7 +25,6 @@ db.once('open', () => {
   console.log('Connected to MongoDB'.cyan);
 });
 
-const router = require('./routes/router');
 app.use('/api', router);
 
 // ASCII art 'Spotify API'
