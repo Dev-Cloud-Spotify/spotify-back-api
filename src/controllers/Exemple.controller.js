@@ -2,6 +2,11 @@
 const Exemple = require('../models/Exemple');
 
 const exempleController = {
+
+    test: (req, res) => {
+        res.send('Exemple controller works');
+    },
+
     // Create a new exemple
     createExemple: async (req, res) => {
         try {
@@ -74,4 +79,4 @@ const exempleController = {
     }
 };
 
-export default exempleController;
+module.exports = exempleController;
