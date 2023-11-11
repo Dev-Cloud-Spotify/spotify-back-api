@@ -54,7 +54,7 @@ const artistController = {
       res.status(500).json({ message: error.message });
     }
   },
-
+  //http://localhost:3000/api/artists/pushAlbumIntoArtist/654fe05338af9f28eef9d4d3
   pushAlbumIntoArtist: async (req, res) => {
     const { AlbumId } = req.body;
     const updatedArtist = await Artist.findByIdAndUpdate(
@@ -64,8 +64,15 @@ const artistController = {
     );
     console.log(updatedArtist);
 
-    res.json({ message: `Album ${AlbumId} pushed into Artist ` });
+    res.json({
+      updatedArtist,
+      message: `Album ${AlbumId} pushed into Artist `,
+    });
   },
 };
 
 export default artistController;
+
+//AWS bucket : ynovspotifybucket
+//mdp : Ynov2023!
+//username :kouci
