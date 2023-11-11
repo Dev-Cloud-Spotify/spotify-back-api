@@ -18,29 +18,37 @@ const songController = {
     }
   },
 
+  // get all songs :  http://localhost:3000/api/songs/getSongs
   getSongs: async (req, res) => {
     const songs = await Song.find();
     res.json(songs);
   },
 
+  //get a song by id : http://localhost:3000/api/songs/getSongById/654f9f20696fb35925863ae7
   getSongById: async (req, res) => {
     const song = await Song.findById(req.params.id);
     res.json(song);
   },
 
   updateSongById: async (req, res) => {
-    const { name, lastName, albums } = req.body;
+    const { title, autor, url, albums } = req.body;
     const updatedSong = await Song.findByIdAndUpdate(
       req.params.id,
-      { name, lastName, albums },
+      { title, autor, url, albums },
       { new: true }
     );
     res.json(updatedSong);
   },
 
+  //supprimer une song : http://localhost:3000/api/songs/deleteSongById/654f9ddbccd3ac9b34aecc88
   deleteSongById: async (req, res) => {
-    const deletedSong = await Song.findByIdAndDelete(req.params.id);
-    res.json(deletedSong);
+    try {
+      const deletedSong = await Song.findByIdAndDelete(req.params.id);
+      const message = `Song with id ${req.params.id} and title '${deletedSong.title}' deleted`;
+      res.json({ deletedSong, message });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   },
 };
 
