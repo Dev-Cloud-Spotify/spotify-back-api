@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
+require('dotenv').config();
 //AWS bucket : ynovspotifybucket
 //mdp : Ynov2023!
 //username :kouci
@@ -12,19 +13,23 @@ AWS.config.update({
   region: 'eu-west-3', // par exemple, 'us-east-1'
 });
 
+console.log('Début du téléchargement vers S3...');
+// console.log(process.env.AWS_ACCESS_KEY_ID);
+// 
+
 // Créez une instance du service S3
 const s3 = new AWS.S3();
 
 // Spécifiez le nom du seau (bucket) et le nom du fichier dans S3
 const bucketName = 'ynovspotifybucket';
-const fileName = 'myAudioFile.m4a';
+const fileName = 'nonJaimePasCa.m4a';
 
 // Configurations pour l'opération de téléchargement vers S3
 const uploadParams = {
   Bucket: bucketName,
   Key: fileName,
   Body: fs.createReadStream(
-    'C:/Users/HP/Desktop/spotify/spotify-back-api/src/assets/audio/vivaldi_hiver_opus8.m4a'
+    'C:/Users/thoma/Downloads/Joe_hi.m4a'
   ),
 };
 
