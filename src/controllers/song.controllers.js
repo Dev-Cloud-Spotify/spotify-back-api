@@ -1,5 +1,5 @@
 //Exemple controller
-import Song from '../models/song.models';
+import Song from '../models/song.models.js';
 
 const songController = {
   test: (req, res) => {
@@ -18,13 +18,21 @@ const songController = {
     }
   },
 
+
   // get all songs :  http://localhost:3000/api/songs/getSongs
+
+  //pour récupérer toutes les songs : http://localhost:3000/api/songs/getSongs
+
   getSongs: async (req, res) => {
     const songs = await Song.find();
     res.json(songs);
   },
 
+
   //get a song by id : http://localhost:3000/api/songs/getSongById/654f9f20696fb35925863ae7
+
+  //pour récupérer une Song par son ID : http://localhost:3000/api/songs/getSongs/
+
   getSongById: async (req, res) => {
     const song = await Song.findById(req.params.id);
     res.json(song);
