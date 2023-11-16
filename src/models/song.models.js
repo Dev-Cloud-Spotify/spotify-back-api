@@ -18,6 +18,6 @@ const songSchema = new mongoose.Schema({
   listens: { type: Number, default: 0 },
 });
 
-const Song = mongoose.model('Song', songSchema);
+const Song = mongoose.model('songs', songSchema);
 
 export default Song;
