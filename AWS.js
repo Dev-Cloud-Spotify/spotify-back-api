@@ -5,10 +5,10 @@ const fs = require('fs');
 //username :kouci
 //Pour lancer le script : node AWS.js ! ATTENTION : pour les besoins de test, j'ai mis le chemin de mon fichier audio en dur dans le script. Il faut donc le changer pour que ça fonctionne chez vous.
 //Ce compte AWS est associé à ma carte bancaire, DEOCONNEZ PAS hein !
-// Configurez le SDK AWS avec vos clés d'accès
+// Configurez le SDK AWS avec vos clés d'accès!
 AWS.config.update({
-  accessKeyId: 'AKIAVZ6KHBUZWQE6GE4T',
-  secretAccessKey: '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',
+  accessKeyId: process.env.accessKeyId,
+  secretAccessKey: process.env.secretAccessKey,
   region: 'eu-west-3', // par exemple, 'us-east-1'
 });
 
