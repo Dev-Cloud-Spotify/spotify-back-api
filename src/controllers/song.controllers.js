@@ -29,13 +29,27 @@ const songController = {
   },
 
 
-  //get a song by id : http://localhost:3000/api/songs/getSongById/654f9f20696fb35925863ae7
+  // Get song by id: http://localhost:3000/api/songs/getSongById/654f9f20696fb35925863ae7
+  async getSongById(req, res) {
+    try {
+      const { id } = req.params;
+      if (!isValidObjectId(id)) {
+        return res.status(404).json({ message: 'Invalid song ID' });
+      }
+      const song = await Song.findById(id);
 
-  //pour récupérer une Song par son ID : http://localhost:3000/api/songs/getSongs/
+      if (!song) {
+        return res.status(404).json({ message: 'Song not found' });
+      }
 
-  getSongById: async (req, res) => {
-    const song = await Song.findById(req.params.id);
-    res.json(song);
+      res.status(200).json({
+        song,
+        message: `Song '${song.title}' with ID ${id} found`,
+      });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+
   },
 
   updateSongById: async (req, res) => {
