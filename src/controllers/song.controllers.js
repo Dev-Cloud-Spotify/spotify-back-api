@@ -7,8 +7,17 @@ const songController = {
   },
   // pour ajouter une song depuis insomnia/postman : http://localhost:3000/api/songs/createSong
   createSong: async (req, res) => {
-    const { title, autor, date_out, url, album, artist } = req.body;
-    const newSong = new Song({ title, autor, date_out, url, album, artist });
+    // const { title, autor, date_out, url, album, artist } = req.body;
+    // const newSong = new Song({ title, autor, date_out, url, album, artist });
+    const { title, autor, date_out, album, artist } = req.body;
+    const newSong = new Song({
+      title,
+      autor,
+      date_out,
+      url: req.s3Url, // Use the S3 URL from the request object
+      album,
+      artist,
+    });
 
     try {
       const savedSong = await newSong.save();
@@ -18,7 +27,6 @@ const songController = {
     }
   },
 
-
   // get all songs :  http://localhost:3000/api/songs/getSongs
 
   //pour récupérer toutes les songs : http://localhost:3000/api/songs/getSongs
@@ -27,7 +35,6 @@ const songController = {
     const songs = await Song.find();
     res.json(songs);
   },
-
 
   // Get song by id: http://localhost:3000/api/songs/getSongById/654f9f20696fb35925863ae7
   async getSongById(req, res) {
@@ -49,7 +56,6 @@ const songController = {
     } catch (error) {
       res.status(500).json({ error: 'Internal Server Error' });
     }
-
   },
 
   updateSongById: async (req, res) => {
