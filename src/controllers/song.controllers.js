@@ -80,6 +80,7 @@ const songController = {
   },
 
   countNumberOfSongs: async (req, res) => {
+    console.log('countNumberOfSongs()'.cyan)
     try {
       const numberOfSongs = await Song.countDocuments();
       res.json({ numberOfSongs });
@@ -88,9 +89,10 @@ const songController = {
     }
   },
 
-  getTotalNumberOfListen: async (req, res) => {
+  getTotalNumberOfListens: async (req, res) => {
+    console.log('getTotalNumberOfListens()'.cyan)
     try {
-      const numberOfListen = await Song.aggregate([
+      const numberOfListens = await Song.aggregate([
         {
           $group: {
             _id: null,
@@ -98,7 +100,7 @@ const songController = {
           },
         },
       ]);
-      res.json({ numberOfListen });
+      res.json({ numberOfListens });
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: 'Internal Server Error' });
