@@ -10,6 +10,9 @@ const AlbumSchema = new mongoose.Schema({
   },
   songs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Song' }],
   coverImage: { type: String, required: false },
+},
+{
+  timestamps: true,
 });
 
 const Album = mongoose.model('Album', AlbumSchema);

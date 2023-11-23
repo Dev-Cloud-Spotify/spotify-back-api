@@ -9,6 +9,9 @@ const songSchema = new mongoose.Schema({
   album: { type: mongoose.Schema.Types.ObjectId, ref:'Album' , required: false },
   artist: { type: mongoose.Schema.Types.ObjectId, ref:'Artist' , required: false },
   listens: { type: Number, default: 0},
+}, 
+{
+  timestamps: true,
 });
 
 const Song = mongoose.model('Song', songSchema);
