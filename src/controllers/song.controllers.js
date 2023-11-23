@@ -37,7 +37,7 @@ const songController = {
   },
 
   // Get song by id: http://localhost:3000/api/songs/getSongById/654f9f20696fb35925863ae7
-  async getSongById(req, res) {
+   getSongById: async(req, res) => {
     try {
       const { id } = req.params;
       if (!isValidObjectId(id)) {
@@ -78,6 +78,33 @@ const songController = {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   },
+
+  countNumberOfSongs: async (req, res) => {
+    try {
+      const numberOfSongs = await Song.countDocuments();
+      res.json({ numberOfSongs });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
+  getTotalNumberOfListen: async (req, res) => {
+    try {
+      const numberOfListen = await Song.aggregate([
+        {
+          $group: {
+            _id: null,
+            total: { $sum: '$listens' },
+          },
+        },
+      ]);
+      res.json({ numberOfListen });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
 };
 
 export default songController;

@@ -9,5 +9,7 @@ router.get('/getSongs', songController.getSongs);
 router.get('/getSongById/:id', songController.getSongById);
 router.put('/updateSongById/:id', songController.updateSongById);
 router.delete('/deleteSongById/:id', songController.deleteSongById);
+router.get('/countNumberOfSongs', songController.countNumberOfSongs);
+router.get('/getTotalNumberOfListen', songController.getTotalNumberOfListen);
 
 export default router;
