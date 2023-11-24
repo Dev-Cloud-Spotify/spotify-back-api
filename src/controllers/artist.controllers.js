@@ -79,6 +79,4 @@ const artistController = {
 
 export default artistController;
 
-//AWS bucket : ynovspotifybucket
-//mdp : Ynov2023!
-//username :kouci
+

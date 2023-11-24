@@ -1,8 +1,8 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
-// dotenv = require('dotenv');
-// dotenv.config();
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
+// require('dotenv').config();
 
 AWS.config.update({
   accessKeyId: process.env.accessKeyId,
@@ -14,14 +14,19 @@ const s3 = new AWS.S3();
 
 const uploadAWSMiddleware = (req, res, next) => {
   console.log('uploadAWSMiddleware()'.yellow);
+  // console.log(process.env.accessKeyId)
+  // console.log(process.env.secretAccessKey)
+
   const { title } = req.body; // Assuming title is a unique identifier for the file
   const fileName = `${title}.m4a`;
 
   const uploadParams = {
-    Bucket: 'ynovspotifybucket',
+    Bucket: 'spotifybucketynov',
     Key: fileName,
-    Body: fs.createReadStream('C:/Users/HP/Downloads/LCDC.m4a'),
+    Body: fs.createReadStream('C:/Users/thoma/Downloads/Magical.mp3'),
   };
+
+  // console.log('uploadParams', uploadParams)²
 
   s3.upload(uploadParams, (err, data) => {
     if (err) {
