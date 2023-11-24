@@ -7,6 +7,7 @@ const songController = {
   },
   // pour ajouter une song depuis insomnia/postman : http://localhost:3000/api/songs/createSong
   createSong: async (req, res) => {
+    console.log('createSong()'.cyan)
     // const { title, autor, date_out, url, album, artist } = req.body;
     // const newSong = new Song({ title, autor, date_out, url, album, artist });
     const { title, autor, date_out, album, artist } = req.body;
@@ -32,12 +33,14 @@ const songController = {
   //pour récupérer toutes les songs : http://localhost:3000/api/songs/getSongs
 
   getSongs: async (req, res) => {
+    console.log('getSongs()'.cyan)
     const songs = await Song.find();
     res.json(songs);
   },
 
   // Get song by id: http://localhost:3000/api/songs/getSongById/654f9f20696fb35925863ae7
    getSongById: async(req, res) => {
+    console.log('getSongById()'.cyan)
     try {
       const { id } = req.params;
       if (!isValidObjectId(id)) {
@@ -59,6 +62,7 @@ const songController = {
   },
 
   updateSongById: async (req, res) => {
+    console.log('updateSongById()'.cyan)
     const { title, autor, url, albums } = req.body;
     const updatedSong = await Song.findByIdAndUpdate(
       req.params.id,
@@ -70,6 +74,7 @@ const songController = {
 
   //supprimer une song : http://localhost:3000/api/songs/deleteSongById/654f9ddbccd3ac9b34aecc88
   deleteSongById: async (req, res) => {
+    console.log('deleteSongById()'.cyan)
     try {
       const deletedSong = await Song.findByIdAndDelete(req.params.id);
       const message = `Song with id ${req.params.id} and title '${deletedSong.title}' deleted`;

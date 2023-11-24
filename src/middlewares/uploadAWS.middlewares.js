@@ -13,6 +13,7 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 const uploadAWSMiddleware = (req, res, next) => {
+  console.log('uploadAWSMiddleware()'.yellow);
   const { title } = req.body; // Assuming title is a unique identifier for the file
   const fileName = `${title}.m4a`;
 

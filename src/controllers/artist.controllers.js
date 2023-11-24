@@ -3,6 +3,7 @@ import Artist from '../models/artist.models.js';
 
 const artistController = {
   getArtists: async (req, res) => {
+    console.log('getArtists()'.cyan);
     try {
       const artists = await Artist.find();
       res.json(artists);
@@ -11,6 +12,7 @@ const artistController = {
     }
   },
   getArtistById: async (req, res) => {
+    console.log('getArtistById()'.cyan);
     try {
       const artist = await Artist.findById(req.params.id);
       res.json(artist);
@@ -19,6 +21,7 @@ const artistController = {
     }
   },
   createArtist: async (req, res) => {
+    console.log('createArtist()'.cyan);
     try {
       const artist = new Artist(req.body);
       const createdArtist = await artist.save();
@@ -28,6 +31,7 @@ const artistController = {
     }
   },
   updateArtist: async (req, res) => {
+    console.log('updateArtist()'.cyan);
     try {
       const artist = await Artist.findById(req.params.id);
       if (req.body.name) {
@@ -46,6 +50,7 @@ const artistController = {
     }
   },
   deleteArtist: async (req, res) => {
+    console.log('deleteArtist()'.cyan);
     try {
       const artist = await Artist.findById(req.params.id);
       await artist.remove();
@@ -56,6 +61,7 @@ const artistController = {
   },
   //http://localhost:3000/api/artists/pushAlbumIntoArtist/654fe05338af9f28eef9d4d3
   pushAlbumIntoArtist: async (req, res) => {
+    console.log('pushAlbumIntoArtist()'.cyan);
     const { AlbumId } = req.body;
     const updatedArtist = await Artist.findByIdAndUpdate(
       req.params.id,
