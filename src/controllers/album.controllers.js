@@ -15,7 +15,7 @@ const albumController = {
   // Get all albums : http://localhost:3000/api/albums/getAllAlbums
   getAlbums: async (req, res) => {
     console.log('getAlbums()'.cyan)
-    const albums = await Album.find();
+    const albums = await Album.find().populate('artist');
     res.json(albums);
   },
 
