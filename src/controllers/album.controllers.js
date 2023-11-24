@@ -19,6 +19,23 @@ const albumController = {
     res.json(albums);
   },
 
+  getAlbumSongs: async (req, res) => {
+    console.log('getAlbumSongs()'.cyan)
+    try {
+      const { id } = req.params;
+      if (!isValidObjectId(id)) {
+        return res.status(404).json({ message: 'Album not found' });
+      }
+      const album = await Album.findById(id).populate('songs');
+      res.status(200).json({
+        album,
+        message: `Album ${album.title} with id ${req.params.id} found`,
+      });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
   // Get album by id : http://localhost:3000/api/albums/getAlbumById/654fc2a5c49e5935e8bd6a8b
   getAlbumById: async (req, res) => {
     console.log('getAlbumById()'.cyan)
