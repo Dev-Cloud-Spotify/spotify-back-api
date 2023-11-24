@@ -8,14 +8,15 @@ const songController = {
   // pour ajouter une song depuis insomnia/postman : http://localhost:3000/api/songs/createSong
   createSong: async (req, res) => {
     console.log('createSong()'.cyan)
-    // const { title, autor, date_out, url, album, artist } = req.body;
-    // const newSong = new Song({ title, autor, date_out, url, album, artist });
-    const { title, autor, date_out, album, artist } = req.body;
+
+    const { title, releaseDate, album, artist, coverImage } = req.body;
     const newSong = new Song({
       title,
-      autor,
-      date_out,
+      // autor,
+      releaseDate,
+      duration: '3:00', //TODO: calculer la durée de la chanson
       url: req.s3Url, // Use the S3 URL from the request object
+      coverImage,
       album,
       artist,
     });
@@ -63,10 +64,10 @@ const songController = {
 
   updateSongById: async (req, res) => {
     console.log('updateSongById()'.cyan)
-    const { title, autor, url, albums } = req.body;
+    const { title, url, albums, artist, coverImage } = req.body;
     const updatedSong = await Song.findByIdAndUpdate(
       req.params.id,
-      { title, autor, url, albums },
+      { title, artist, url, albums, coverImage },
       { new: true }
     );
     res.json(updatedSong);
