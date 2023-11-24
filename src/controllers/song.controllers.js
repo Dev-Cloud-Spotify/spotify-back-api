@@ -40,7 +40,7 @@ const songController = {
 
   getSongs: async (req, res) => {
     console.log('getSongs()'.cyan)
-    const songs = await Song.find();
+    const songs = await Song.find().populate('album', 'title').populate('artist', 'name');
     res.json(songs);
   },
 

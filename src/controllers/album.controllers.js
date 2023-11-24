@@ -1,5 +1,6 @@
 import { isValidObjectId } from 'mongoose';
 import Album from '../models/album.models';
+import Artist from '../models/artist.models';
 
 const albumController = {
   // Create a new album : http://localhost:3000/api/albums/createAlbum
@@ -8,6 +9,10 @@ const albumController = {
     const { title, artist, songs, coverImage } = req.body;
     const newAlbum = new Album({ title, artist, songs, coverImage });
     const albumCreated = await newAlbum.save();
+    //add album id to artist
+    await Artist.findByIdAndUpdate(artist, {
+      $push: { albums: albumCreated._id },
+    });
     res
       .status(201)
       .json({ albumCreated, message: `Album ${albumCreated.title} created` });

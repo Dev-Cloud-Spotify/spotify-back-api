@@ -5,7 +5,7 @@ const artistController = {
   getArtists: async (req, res) => {
     console.log('getArtists()'.cyan);
     try {
-      const artists = await Artist.find();
+      const artists = await Artist.find().populate('albums');
       res.json(artists);
     } catch (error) {
       res.status(500).json({ message: error.message });
