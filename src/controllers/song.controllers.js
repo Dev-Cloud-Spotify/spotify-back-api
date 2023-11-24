@@ -1,4 +1,5 @@
 //Exemple controller
+import Album from '../models/album.models.js';
 import Song from '../models/song.models.js';
 
 const songController = {
@@ -14,7 +15,7 @@ const songController = {
       title,
       // autor,
       releaseDate,
-      duration: '3:00', //TODO: calculer la durée de la chanson
+      duration: 180, //TODO: calculer la durée de la chanson
       url: req.s3Url, // Use the S3 URL from the request object
       coverImage,
       album,
@@ -23,6 +24,10 @@ const songController = {
 
     try {
       const savedSong = await newSong.save();
+      //add song id to album
+      await Album.findByIdAndUpdate(album, {
+        $push: { songs: savedSong._id },
+      });
       res.status(201).json(savedSong);
     } catch (error) {
       res.status(500).json({ message: error.message });
