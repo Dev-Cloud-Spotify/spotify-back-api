@@ -11,5 +11,6 @@ router.put('/updateSongById/:id', songController.updateSongById);
 router.delete('/deleteSongById/:id', songController.deleteSongById);
 router.get('/countNumberOfSongs', songController.countNumberOfSongs);
 router.get('/getTotalNumberOfListens', songController.getTotalNumberOfListens);
+router.get('/getSongsWithoutAlbum', songController.getSongsWithoutAlbum);
 
 export default router;
