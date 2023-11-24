@@ -44,6 +44,16 @@ const songController = {
     res.json(songs);
   },
 
+  //Get song without album
+  getSongsWithoutAlbum: async (req, res) => {
+    try {
+        const songsWithoutAlbum = await Song.find({ album: null });
+        res.json(songsWithoutAlbum);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+},
   // Get song by id: http://localhost:3000/api/songs/getSongById/654f9f20696fb35925863ae7
    getSongById: async(req, res) => {
     console.log('getSongById()'.cyan)
