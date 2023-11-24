@@ -4,6 +4,7 @@ import Album from '../models/album.models';
 const albumController = {
   // Create a new album : http://localhost:3000/api/albums/createAlbum
   createAlbum: async (req, res) => {
+    console.log('createAlbum()'.cyan)
     const { title, artist, songs, coverImage } = req.body;
     const newAlbum = new Album({ title, artist, songs, coverImage });
     const albumCreated = await newAlbum.save();
@@ -13,12 +14,14 @@ const albumController = {
   },
   // Get all albums : http://localhost:3000/api/albums/getAllAlbums
   getAlbums: async (req, res) => {
+    console.log('getAlbums()'.cyan)
     const albums = await Album.find();
     res.json(albums);
   },
 
   // Get album by id : http://localhost:3000/api/albums/getAlbumById/654fc2a5c49e5935e8bd6a8b
   getAlbumById: async (req, res) => {
+    console.log('getAlbumById()'.cyan)
     try {
       const { id } = req.params;
       if (!isValidObjectId(id)) {
@@ -36,6 +39,7 @@ const albumController = {
   },
   // Delete album by id http://localhost:3000/api/albums/deleteAlbum/654fb7ec0c030c4f983df8e4
   deleteAlbumById: async (req, res) => {
+    console.log('deleteAlbumById()'.cyan)
     try {
       const deletedAlbum = await Album.findByIdAndDelete(req.params.id);
       const message = `Album with id ${req.params.id} and title ${deletedAlbum.title} deleted`;
@@ -47,6 +51,7 @@ const albumController = {
 
   // Update album by id : http://localhost:3000/api/albums/updateAlbum/654fb9a109fa233f90f23f9e
   updateAlbumById: async (req, res) => {
+    console.log('updateAlbumById()'.cyan)
     const updatedAlbum = await Album.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -58,6 +63,7 @@ const albumController = {
   },
 
   countNumberOfAlbums: async (req, res) => {
+    console.log('countNumberOfAlbums()'.cyan)
     try {
       const numberOfAlbums = await Album.countDocuments();
       res.json({ numberOfAlbums });
