@@ -4,6 +4,10 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
+import multer from 'multer';
+
+const upload = multer();
+
 dotenv.config();
 
 import '@colors/colors';
@@ -12,8 +16,9 @@ import router from './routes/router.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
-
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(upload.any());
+app.use(bodyParser.json([]));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 

@@ -3,8 +3,16 @@ const router = express.Router();
 import songController from '../controllers/song.controllers';
 import uploadAWSMiddleware from '../middlewares/uploadAWS.middlewares';
 
+import multer from 'multer';
+const upload = multer({ dest: 'uploads/'});
+
+
 router.get('/test', songController.test);
-router.post('/createSong', uploadAWSMiddleware, songController.createSong);
+router.post('/createSong',
+    // upload.single('audioFile'),
+    uploadAWSMiddleware,
+    songController.createSong
+);
 router.get('/getSongs', songController.getSongs);
 router.get('/getSongById/:id', songController.getSongById);
 router.put('/updateSongById/:id', songController.updateSongById);
