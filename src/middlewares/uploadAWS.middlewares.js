@@ -25,10 +25,11 @@ const uploadAWSMiddleware = (req, res, next) => {
   const uploadParams = {
     Bucket: 'spotifybucketynov',
     Key: fileName,
+    // Body: fs.createReadStream(req.body.audioFile),
     Body: fs.createReadStream(req.body.audioFile),
   };
 
-  // console.log('uploadParams', uploadParams)²
+  // console.log('uploadParams', uploadParams)
 
   s3.upload(uploadParams, (err, data) => {
     if (err) {
