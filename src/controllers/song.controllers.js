@@ -18,16 +18,18 @@ const songController = {
       duration: 180, //TODO: calculer la durée de la chanson
       url: req.s3Url, // Use the S3 URL from the request object
       coverImage,
-      album,
+      album: album || null,
       artist,
     });
 
     try {
       const savedSong = await newSong.save();
       //add song id to album
-      await Album.findByIdAndUpdate(album, {
-        $push: { songs: savedSong._id },
-      });
+      if(album){
+        await Album.findByIdAndUpdate(album, {
+          $push: { songs: savedSong._id },
+        });
+      }
       res.status(201).json(savedSong);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -40,7 +42,7 @@ const songController = {
 
   getSongs: async (req, res) => {
     console.log('getSongs()'.cyan)
-    const songs = await Song.find();
+    const songs = await Song.find().populate('artist');
     res.json(songs);
   },
 

@@ -17,13 +17,15 @@ const uploadAWSMiddleware = (req, res, next) => {
   // console.log(process.env.accessKeyId)
   // console.log(process.env.secretAccessKey)
 
+  console.log('req.body', req.body)
+
   const { title } = req.body; // Assuming title is a unique identifier for the file
   const fileName = `${title}.m4a`;
 
   const uploadParams = {
     Bucket: 'spotifybucketynov',
     Key: fileName,
-    Body: fs.createReadStream('C:/Users/thoma/Downloads/Magical.mp3'),
+    Body: fs.createReadStream(req.body.audioFile),
   };
 
   // console.log('uploadParams', uploadParams)²
