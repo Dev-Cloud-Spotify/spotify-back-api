@@ -81,12 +81,38 @@ const songController = {
 
   updateSongById: async (req, res) => {
     console.log('updateSongById()'.cyan)
-    const { title, url, albums, artist, coverImage } = req.body;
+    const { title, url, album, artist, coverImage } = req.body;
+    console.log(req.body);
+    const oldSong = await Song.findById(req.params.id);
+    const oldAlbum = oldSong.album;
+    console.log(oldAlbum);
+
     const updatedSong = await Song.findByIdAndUpdate(
       req.params.id,
-      { title, artist, url, albums, coverImage },
+      { title, artist, url, album, coverImage },
       { new: true }
     );
+    //delete song from album
+    if (req.body.album === null) {
+      console.log('album is null');
+      
+      if (oldAlbum) {
+        console.log('on met à jour lalbum sans la musique');
+          // Utilise $pull pour retirer l'ID de la chanson de l'array songs
+          await Album.updateOne(
+              { _id: oldAlbum },
+              { $pull: { songs: updatedSong._id } }
+          );
+      }
+  }
+    else {
+      // Ajoute la chanson à l'album si elle est ajoutée à l'album
+      const album = await Album.findById(req.body.album);
+      if (album) {
+          album.songs.push(updatedSong._id);
+          await album.save();
+      }
+  }
     res.json(updatedSong);
   },
 
