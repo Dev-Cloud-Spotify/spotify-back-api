@@ -1,6 +1,7 @@
 import { isValidObjectId } from 'mongoose';
 import Artist from '../models/artist.models.js';
 import Album from '../models/album.models.js';
+import Song from '../models/song.models.js';
 
 const artistController = {
   getArtists: async (req, res) => {
@@ -55,9 +56,13 @@ const artistController = {
     try {
       const deletedartist = await Artist.findByIdAndDelete(req.params.id);
       //remove the artist from the albums
-      const Album = mongoose.model('Album');
       await Album.updateMany(
         { _id: { $in: deletedartist.albums } },
+        { $unset: { artist: 1 } }
+      );
+      //delete the artist from the songs
+      await Song.updateMany(
+        { _id: { $in: deletedartist.songs } },
         { $unset: { artist: 1 } }
       );
       res.json({ deletedartist, message: 'Artist deleted' });
