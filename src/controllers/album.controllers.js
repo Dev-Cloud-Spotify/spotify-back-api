@@ -1,5 +1,6 @@
 import { isValidObjectId } from 'mongoose';
 import Album from '../models/album.models';
+import Song from '../models/song.models';
 
 const albumController = {
   // Create a new album : http://localhost:3000/api/albums/createAlbum
@@ -54,11 +55,16 @@ const albumController = {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   },
-  // Delete album by id http://localhost:3000/api/albums/deleteAlbum/654fb7ec0c030c4f983df8e4
+  // Delete album by id http://localhost:3000/api/albums/deleteAlbumById/654fb7ec0c030c4f983df8e4
   deleteAlbumById: async (req, res) => {
     console.log('deleteAlbumById()'.cyan)
     try {
       const deletedAlbum = await Album.findByIdAndDelete(req.params.id);
+      //unset the album field from associated songs
+      await Song.updateMany(
+        { _id: { $in: deletedAlbum.songs } },
+        { $unset: { album: 1 } }
+      );
       const message = `Album with id ${req.params.id} and title ${deletedAlbum.title} deleted`;
       res.json({ deletedAlbum, message });
     } catch (error) {
@@ -66,7 +72,7 @@ const albumController = {
     }
   },
 
-  // Update album by id : http://localhost:3000/api/albums/updateAlbum/654fb9a109fa233f90f23f9e
+  // Update album by id : http://localhost:3000/api/albums/updateAlbumById/654fb9a109fa233f90f23f9e
   updateAlbumById: async (req, res) => {
     console.log('updateAlbumById()'.cyan)
     const updatedAlbum = await Album.findByIdAndUpdate(
