@@ -21,12 +21,16 @@ const uploadAWSMiddleware = (req, res, next) => {
 
   const { title } = req.body; // Assuming title is a unique identifier for the file
   const fileName = `${title}.m4a`;
+  console.log('req.file', req.file)
+
+  const filePath = req.file.path;
+  console.log('filePath', filePath)
 
   const uploadParams = {
     Bucket: 'spotifybucketynov',
     Key: fileName,
     // Body: fs.createReadStream(req.body.audioFile),
-    Body: fs.createReadStream(req.body.audioFile),
+    Body: fs.createReadStream(filePath),
   };
 
   // console.log('uploadParams', uploadParams)
