@@ -41,9 +41,23 @@ const uploadAWSMiddleware = (req, res, next) => {
       res.status(500).json({ message: 'Error uploading to S3' });
     } else {
       req.s3Url = data.Location; // Attach S3 URL to the request object
+      deleteFileFromStorage(filePath);
       next(); // Proceed to the next middleware or route handler
     }
   });
 };
+
+
+const deleteFileFromStorage = (filePath) => {
+  console.log('deleteFileFromStorage()'.yellow);
+  fs.unlink(filePath, (err) => {
+      if (err) {
+          console.error(err)
+          return
+      }
+      //file removed
+      console.log('File removed from storage'.green);
+  })
+}
 
 module.exports = uploadAWSMiddleware;
