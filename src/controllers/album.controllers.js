@@ -1,6 +1,8 @@
 import { isValidObjectId } from 'mongoose';
 import Album from '../models/album.models';
 import Song from '../models/song.models';
+import Artist from '../models/artist.models';
+
 
 const albumController = {
   // Create a new album : http://localhost:3000/api/albums/createAlbum
@@ -9,6 +11,11 @@ const albumController = {
     const { title, artist, songs, coverImage } = req.body;
     const newAlbum = new Album({ title, artist, songs, coverImage });
     const albumCreated = await newAlbum.save();
+    //add album id to artist
+    const artistToUpdate = await Artist.findById(artist);
+    artistToUpdate.albums.push(albumCreated._id);
+    await artistToUpdate.save();
+    
     res
       .status(201)
       .json({ albumCreated, message: `Album ${albumCreated.title} created` });
@@ -59,12 +66,19 @@ const albumController = {
   deleteAlbumById: async (req, res) => {
     console.log('deleteAlbumById()'.cyan)
     try {
+      const oldAlbum = await Album.findById(req.params.id);
+
       const deletedAlbum = await Album.findByIdAndDelete(req.params.id);
       //unset the album field from associated songs
       await Song.updateMany(
         { _id: { $in: deletedAlbum.songs } },
         { $unset: { album: 1 } }
       );
+      //remove the album from the artist
+      const artist= await Artist.findById(oldAlbum.artist);
+      artist.albums.pull(req.params.id);
+      await artist.save();
+
       const message = `Album with id ${req.params.id} and title ${deletedAlbum.title} deleted`;
       res.json({ deletedAlbum, message });
     } catch (error) {
