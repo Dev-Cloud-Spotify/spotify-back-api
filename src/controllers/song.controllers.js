@@ -8,7 +8,7 @@ const songController = {
   },
   // pour ajouter une song depuis insomnia/postman : http://localhost:3000/api/songs/createSong
   createSong: async (req, res) => {
-    console.log('createSong()'.cyan)
+    console.log('createSong()'.cyan);
 
     const { title, releaseDate, album, artist, coverImage } = req.body;
     const newSong = new Song({
@@ -20,12 +20,13 @@ const songController = {
       coverImage,
       album: album || null,
       artist,
+      CFurl: req.CFurl,
     });
 
     try {
       const savedSong = await newSong.save();
       //add song id to album
-      if(album){
+      if (album) {
         await Album.findByIdAndUpdate(album, {
           $push: { songs: savedSong._id },
         });
@@ -41,7 +42,7 @@ const songController = {
   //pour récupérer toutes les songs : http://localhost:3000/api/songs/getSongs
 
   getSongs: async (req, res) => {
-    console.log('getSongs()'.cyan)
+    console.log('getSongs()'.cyan);
     const songs = await Song.find().populate('artist');
     res.json(songs);
   },
@@ -49,16 +50,16 @@ const songController = {
   //Get song without album
   getSongsWithoutAlbum: async (req, res) => {
     try {
-        const songsWithoutAlbum = await Song.find({ album: null });
-        res.json(songsWithoutAlbum);
+      const songsWithoutAlbum = await Song.find({ album: null });
+      res.json(songsWithoutAlbum);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-},
+  },
   // Get song by id: http://localhost:3000/api/songs/getSongById/654f9f20696fb35925863ae7
-   getSongById: async(req, res) => {
-    console.log('getSongById()'.cyan)
+  getSongById: async (req, res) => {
+    console.log('getSongById()'.cyan);
     try {
       const { id } = req.params;
       if (!isValidObjectId(id)) {
@@ -80,7 +81,7 @@ const songController = {
   },
 
   updateSongById: async (req, res) => {
-    console.log('updateSongById()'.cyan)
+    console.log('updateSongById()'.cyan);
     const { title, url, album, artist, coverImage } = req.body;
     console.log(req.body);
     const oldSong = await Song.findById(req.params.id);
@@ -95,30 +96,29 @@ const songController = {
     //delete song from album
     if (req.body.album === null) {
       console.log('album is null');
-      
+
       if (oldAlbum) {
         console.log('on met à jour lalbum sans la musique');
-          // Utilise $pull pour retirer l'ID de la chanson de l'array songs
-          await Album.updateOne(
-              { _id: oldAlbum },
-              { $pull: { songs: updatedSong._id } }
-          );
+        // Utilise $pull pour retirer l'ID de la chanson de l'array songs
+        await Album.updateOne(
+          { _id: oldAlbum },
+          { $pull: { songs: updatedSong._id } }
+        );
       }
-  }
-    else {
+    } else {
       // Ajoute la chanson à l'album si elle est ajoutée à l'album
       const album = await Album.findById(req.body.album);
       if (album) {
-          album.songs.push(updatedSong._id);
-          await album.save();
+        album.songs.push(updatedSong._id);
+        await album.save();
       }
-  }
+    }
     res.json(updatedSong);
   },
 
   //supprimer une song : http://localhost:3000/api/songs/deleteSongById/654f9ddbccd3ac9b34aecc88
   deleteSongById: async (req, res) => {
-    console.log('deleteSongById()'.cyan)
+    console.log('deleteSongById()'.cyan);
     try {
       const deletedSong = await Song.findById(req.params.id);
       const deletedSong1 = await Song.findByIdAndDelete(req.params.id);
@@ -137,7 +137,7 @@ const songController = {
   },
 
   countNumberOfSongs: async (req, res) => {
-    console.log('countNumberOfSongs()'.cyan)
+    console.log('countNumberOfSongs()'.cyan);
     try {
       const numberOfSongs = await Song.countDocuments();
       res.json({ numberOfSongs });
@@ -147,7 +147,7 @@ const songController = {
   },
 
   getTotalNumberOfListens: async (req, res) => {
-    console.log('getTotalNumberOfListens()'.cyan)
+    console.log('getTotalNumberOfListens()'.cyan);
     try {
       const numberOfListens = await Song.aggregate([
         {
@@ -162,8 +162,7 @@ const songController = {
       console.log(error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
-  }
-
+  },
 };
 
 export default songController;
