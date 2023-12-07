@@ -120,9 +120,17 @@ const songController = {
   deleteSongById: async (req, res) => {
     console.log('deleteSongById()'.cyan)
     try {
-      const deletedSong = await Song.findByIdAndDelete(req.params.id);
-      const message = `Song with id ${req.params.id} and title '${deletedSong.title}' deleted`;
-      res.json({ deletedSong, message });
+      const deletedSong = await Song.findById(req.params.id);
+      const deletedSong1 = await Song.findByIdAndDelete(req.params.id);
+      // unset the album field from the song
+      if (deletedSong.album) {
+        const album = await Album.findById(deletedSong.album);
+        album.songs.pull(req.params.id);
+        await album.save();
+      }
+      // delete the song
+      const message = `Song with id ${req.params.id} and title '${deletedSong1.title}' deleted`;
+      res.json({ deletedSong1, message });
     } catch (error) {
       res.status(500).json({ error: 'Internal Server Error' });
     }
