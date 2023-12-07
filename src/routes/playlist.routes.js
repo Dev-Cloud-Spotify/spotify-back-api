@@ -10,5 +10,6 @@ router.put('/updatePlaylist/:id', playlistController.updatePlaylist);
 router.delete('/deletePlaylistById/:id', playlistController.deletePlaylistById);
 router.put('/addSongToPlaylist/:id', playlistController.addSongToPlaylist);
 router.put('/removeSongFromPlaylist/:id', playlistController.removeSongFromPlaylist);
+router.get('/countNumberOfPlaylists', playlistController.countNumberOfPlaylists);
 export default router;
 

@@ -96,6 +96,16 @@ const playlistController = {
             res.status(500).json({ message: error.message });
         }
     },
+    //get number of playlists
+    countNumberOfPlaylists: async (req, res) => {
+        console.log('countNumberOfPlaylists()'.cyan);
+        try {
+            const numberOfPlaylists = await Playlist.countDocuments();
+            res.json({ numberOfPlaylists });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
 };
 export default playlistController;
 
