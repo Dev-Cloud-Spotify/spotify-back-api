@@ -17,7 +17,7 @@ const playlistController = {
     getPlaylists: async (req, res) => {
         console.log('getPlaylists()'.cyan);
         try {
-            const playlists = await Playlist.find().populate('songs');
+            const playlists = await Playlist.find();
             res.json(playlists);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -27,7 +27,7 @@ const playlistController = {
     getPlaylistById: async (req, res) => {
         console.log('getPlaylistById()'.cyan);
         try {
-            const playlist = await Playlist.findById(req.params.id);
+            const playlist = await Playlist.findById(req.params.id).populate('songs');
             res.json(playlist);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -66,12 +66,20 @@ const playlistController = {
         try {
             const { id } = req.params;
             const { songId } = req.body;
+            console.log(req.body);
+    
+            // Vérifie si songId existe déjà dans la playlist
             const playlist = await Playlist.findById(id);
+            if (playlist.songs.includes(songId)) {
+                return res.status(400).json({ message: 'La chanson existe déjà dans la playlist.' });
+            }
+    
             playlist.songs.push(songId);
             const updatedPlaylist = await playlist.save();
             res.json(updatedPlaylist);
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            console.error(error);
+            res.status(500).json({ message: 'Erreur interne du serveur.' });
         }
     },
     //remove song from playlist

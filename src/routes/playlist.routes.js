@@ -8,6 +8,7 @@ router.get('/getPlaylistById/:id', playlistController.getPlaylistById);
 router.post('/createPlaylist', playlistController.createPlaylist);
 router.put('/updatePlaylist/:id', playlistController.updatePlaylist);
 router.delete('/deletePlaylistById/:id', playlistController.deletePlaylistById);
-
+router.put('/addSongToPlaylist/:id', playlistController.addSongToPlaylist);
+router.put('/removeSongFromPlaylist/:id', playlistController.removeSongFromPlaylist);
 export default router;
 
