@@ -42,6 +42,9 @@ const artistController = {
       if (req.body.lastName) {
         artist.lastName = req.body.lastName;
       }
+      if (req.body.artistImage) {
+        artist.artistImage = req.body.artistImage;
+      }
       if (req.body.albums) {
         artist.albums = req.body.albums;
       }
