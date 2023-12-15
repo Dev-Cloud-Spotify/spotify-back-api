@@ -17,7 +17,10 @@ const playlistController = {
     getPlaylists: async (req, res) => {
         console.log('getPlaylists()'.cyan);
         try {
-            const playlists = await Playlist.find();
+            const playlists = await Playlist.find().populate({
+                path: 'songs',
+                options: { limit: 4 } // Limit the populated songs to the first 4
+            });
             res.json(playlists);
         } catch (error) {
             res.status(500).json({ message: error.message });
