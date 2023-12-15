@@ -1,4 +1,5 @@
 import Playlist from "../models/playlist.models";
+import Song from "../models/song.models";
 
 const playlistController = {
     //create a new playlist
@@ -19,8 +20,9 @@ const playlistController = {
         try {
             const playlists = await Playlist.find().populate({
                 path: 'songs',
-                options: { limit: 4 } // Limit the populated songs to the first 4
-            });
+                options: { limit: 4 }, // Limit the populated songs to the first 4
+                sort: { createdAt: -1 }, // Sort by descending createdAt
+            }).sort({ updatedAt: -1 }); // Sort by descending updatedAt
             res.json(playlists);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -109,6 +111,38 @@ const playlistController = {
             res.status(500).json({ message: error.message });
         }
     },
+
+    //create a new playlist All Songs and push all songs in database to it
+    createPlaylistAllSongs: async (req, res) => {
+        console.log('createPlaylistAllSongs()'.cyan);
+        try {
+          // Fetch all songs from the database
+          const allSongs = await Song.find();
+      
+          // Create a new playlist named "All Songs" and add all songs to it
+          const newPlaylist = new Playlist({ title: 'All Songs', songs: allSongs });
+          const playlistCreated = await newPlaylist.save();
+      
+          res.status(201).json({ playlistCreated, message: `Playlist ${playlistCreated.title} created` });
+        } catch (error) {
+          res.status(500).json({ message: error.message });
+        }
+      },
+
+      //get AllSongs playlist
+      getAllSongsPlaylist: async (req, res) => {
+        console.log('getAllSongsPlaylist()'.cyan);
+        try {
+          const playlist = await Playlist.findOne({ title: 'All Songs' }).populate('songs');
+          //update playlist updatedAt
+            playlist.updatedAt = Date.now();
+          res.json(playlist);
+        } catch (error) {
+          res.status(500).json({ message: error.message });
+        }
+      }
+
+        
 };
 export default playlistController;
 
