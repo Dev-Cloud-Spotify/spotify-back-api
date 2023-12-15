@@ -140,6 +140,25 @@ const playlistController = {
         } catch (error) {
           res.status(500).json({ message: error.message });
         }
+      },
+
+      //get 6 most recent playlists
+      getRecentsPlaylist: async (req, res) => {
+        console.log('getRecentsPlaylist()'.cyan);
+        try {
+          const playlists = await Playlist.find()
+          .populate({
+                path: 'songs',
+                options: { limit: 4 }, // Limit the populated songs to the first 4
+                sort: { createdAt: -1 }, // Sort by descending createdAt
+            })
+            .limit(6)
+            .sort({ updatedAt: -1 });
+          res.json(playlists);
+        } catch (error) {
+          res.status(500).json({ message: error.message });
+        }
+       
       }
 
         

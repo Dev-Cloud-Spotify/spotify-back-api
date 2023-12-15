@@ -13,5 +13,6 @@ router.put('/removeSongFromPlaylist/:id', playlistController.removeSongFromPlayl
 router.get('/countNumberOfPlaylists', playlistController.countNumberOfPlaylists);
 router.get('/createPlaylistAllSongs', playlistController.createPlaylistAllSongs);
 router.get('/getAllSongsPlaylist', playlistController.getAllSongsPlaylist);
+router.get('/getRecentsPlaylist', playlistController.getRecentsPlaylist);
 export default router;
 
