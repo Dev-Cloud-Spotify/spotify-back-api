@@ -36,7 +36,7 @@ const uploadAWSMiddleware = (req, res, next) => {
       .toFormat('m4a')
       .on('end', () => {
         console.log('conversion ended');
-        console.log('convertedFilePath', convertedFilePath);
+        console.log('convertedFilePath is', convertedFilePath);
       });
   }
 
