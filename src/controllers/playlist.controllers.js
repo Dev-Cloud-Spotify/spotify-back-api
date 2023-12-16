@@ -32,7 +32,15 @@ const playlistController = {
     getPlaylistById: async (req, res) => {
         console.log('getPlaylistById()'.cyan);
         try {
-            const playlist = await Playlist.findById(req.params.id).populate('songs');
+            //populate artist and album in song
+            const playlist = await Playlist.findById(req.params.id)
+            .populate({
+                path: 'songs',
+                populate: [
+                  { path: 'artist', model: 'Artist' },
+                  { path: 'album', model: 'Album' },
+                ],
+              });
             res.json(playlist);
         } catch (error) {
             res.status(500).json({ message: error.message });
