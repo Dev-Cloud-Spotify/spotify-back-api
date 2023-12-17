@@ -1,10 +1,9 @@
-const AWS = require('aws-sdk');
-const fs = require('fs');
-const path = require('path');
-const dotenv = require('dotenv');
-const ffmpeg = require('fluent-ffmpeg');
+import AWS from 'aws-sdk';
+import fs from 'fs';
+import path from 'path';
+import dotenv from 'dotenv';
+import ffmpeg from 'fluent-ffmpeg';
 dotenv.config();
-// require('dotenv').config();
 
 AWS.config.update({
   accessKeyId: process.env.accessKeyId,
