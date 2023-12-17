@@ -19,7 +19,9 @@ const uploadAWSMiddleware = (req, res, next) => {
   console.log('req.body', req.body);
 
   const { title } = req.body; // Assuming title is a unique identifier for the file
-  const fileName = `${title}.m4a`;
+  //concaténer le titre avec la date pour avoir un nom de fichier unique car AWS ne permet pas d'avoir 2 fichiers avec le même nom
+  const date = Date.now();
+  const fileName = `${title}_${date}.m4a`;
   // console.log('req.file', req.file);
 
   const filePath = req.file.path;
@@ -27,7 +29,10 @@ const uploadAWSMiddleware = (req, res, next) => {
   const fileExtension = path.extname(filePath);
   console.log('File extension:', fileExtension);
   if (fileExtension !== '.m4a') {
-    console.log('File extension not allowed -> conversion starting...', fileExtension);
+    console.log(
+      'File extension not allowed -> conversion starting...',
+      fileExtension
+    );
     const convertedFilePath = `${title}.m4a`;
     ffmpeg(filePath)
       .toFormat('m4a')
