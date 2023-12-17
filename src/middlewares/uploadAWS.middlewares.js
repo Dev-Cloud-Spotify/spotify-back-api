@@ -15,21 +15,19 @@ const s3 = new AWS.S3();
 
 const uploadAWSMiddleware = (req, res, next) => {
   console.log('uploadAWSMiddleware()'.yellow);
-  // console.log(process.env.accessKeyId)
-  // console.log(process.env.secretAccessKey)
 
   console.log('req.body', req.body);
 
   const { title } = req.body; // Assuming title is a unique identifier for the file
   const fileName = `${title}.m4a`;
-  console.log('req.file', req.file);
+  // console.log('req.file', req.file);
 
   const filePath = req.file.path;
   console.log('filePath', filePath);
   const fileExtension = path.extname(filePath);
   console.log('File extension:', fileExtension);
   if (fileExtension !== '.m4a') {
-    console.log('File extension not allowed:', fileExtension);
+    console.log('File extension not allowed -> conversion starting...', fileExtension);
     const convertedFilePath = `${title}.m4a`;
     ffmpeg(filePath)
       .toFormat('m4a')
