@@ -1,6 +1,8 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
+const path = require('path');
 const dotenv = require('dotenv');
+const ffmpeg = require('fluent-ffmpeg');
 dotenv.config();
 // require('dotenv').config();
 
@@ -25,6 +27,18 @@ const uploadAWSMiddleware = (req, res, next) => {
 
   const filePath = req.file.path;
   console.log('filePath', filePath);
+  const fileExtension = path.extname(filePath);
+  console.log('File extension:', fileExtension);
+  if (fileExtension !== '.m4a') {
+    console.log('File extension not allowed:', fileExtension);
+    const convertedFilePath = `${title}.m4a`;
+    ffmpeg(filePath)
+      .toFormat('m4a')
+      .on('end', () => {
+        console.log('conversion ended');
+        console.log('convertedFilePath is', convertedFilePath);
+      });
+  }
 
   const uploadParams = {
     Bucket: 'spotifybucketynov',
