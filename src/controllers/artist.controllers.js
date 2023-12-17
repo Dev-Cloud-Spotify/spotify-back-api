@@ -16,8 +16,10 @@ const artistController = {
   getArtistById: async (req, res) => {
     console.log('getArtistById()'.cyan);
     try {
-      const artist = await Artist.findById(req.params.id);
-      res.json(artist);
+      const artist = await Artist.findById(req.params.id)
+      const songs = await Song.find({ artist: req.params.id }).populate('album');
+      const artistWithSongs = { ...artist._doc, songs } 
+      res.json(artistWithSongs);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
