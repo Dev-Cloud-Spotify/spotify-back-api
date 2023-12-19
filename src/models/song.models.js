@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 const songSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    // autor: { type: String, required:true},
     releaseDate: { type: Date, required: true },
     duration: { type: Number, required: true },
     url: { type: String, required: false },
@@ -21,6 +20,7 @@ const songSchema = new mongoose.Schema(
     },
     listens: { type: Number, default: 0 },
     CFurl: { type: String, required: false },
+    liked: { type: Boolean, default: false },
   },
   {
     timestamps: true,

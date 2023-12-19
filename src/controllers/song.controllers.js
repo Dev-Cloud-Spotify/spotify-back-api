@@ -163,6 +163,19 @@ const songController = {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   },
+
+  //liked the songs
+  likeSong: async (req, res) => {
+    console.log('likeSong()'.cyan);
+    try {
+      const song = await Song.findById(req.params.id);
+      song.liked = !song.liked;
+      await song.save();
+      res.json(song);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
 };
 
 export default songController;

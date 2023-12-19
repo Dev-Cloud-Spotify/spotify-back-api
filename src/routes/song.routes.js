@@ -41,5 +41,6 @@ router.delete('/deleteSongById/:id', songController.deleteSongById);
 router.get('/countNumberOfSongs', songController.countNumberOfSongs);
 router.get('/getTotalNumberOfListens', songController.getTotalNumberOfListens);
 router.get('/getSongsWithoutAlbum', songController.getSongsWithoutAlbum);
+router.get('/likeSong/:id', songController.likeSong);
 
 export default router;
