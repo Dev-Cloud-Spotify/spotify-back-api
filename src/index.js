@@ -6,7 +6,8 @@ import cors from 'cors';
 
 import multer from 'multer';
 
-const upload = multer();
+import http from 'http';
+import socketIO from 'socket.io';
 
 dotenv.config();
 
@@ -15,6 +16,13 @@ import router from './routes/router.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
+const server = http.createServer(app);
+const io = socketIO(server, {
+  cors: {
+    origin: '*', 
+    methods: ['GET', 'POST'],
+  },
+});
 
 app.use(express.json());
 app.use(bodyParser.json([]));
@@ -54,7 +62,21 @@ const API=`
 ╚═╝  ╚═╝╚═╝     ╚═╝
 `
 
-app.listen(port, () => {
+//sockets
+io.on('connection', (socket) => {
+  console.log('A user connected'.bgGreen.black);
+
+  socket.on('changeTrack', (data) => {
+    console.log('Received changeTrack:');
+    io.emit('changeTrack', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected'.bgRed.black);
+  });
+});
+
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`.magenta);
   console.log(spotify.green)
   console.log(API.yellow)
