@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import ffmpeg from 'fluent-ffmpeg';
+const { getAudioDurationInSeconds } = require('get-audio-duration')
 dotenv.config();
 
 AWS.config.update({
@@ -25,7 +26,6 @@ const uploadAWSMiddleware = (req, res, next) => {
   // console.log('req.file', req.file);
 
   const filePath = req.file.path;
-  console.log('filePath', filePath);
   const fileExtension = path.extname(filePath);
   console.log('File extension:', fileExtension);
   if (fileExtension !== '.m4a') {
@@ -40,6 +40,15 @@ const uploadAWSMiddleware = (req, res, next) => {
         console.log('conversion ended');
         console.log('convertedFilePath is', convertedFilePath);
       });
+
+      //get the duration of the audio file
+      getAudioDurationInSeconds(filePath)
+      .then((duration) => {
+        console.log('duration', duration);
+        req.body.duration = duration;
+      })
+      
+
   }
 
   const uploadParams = {
@@ -57,11 +66,10 @@ const uploadAWSMiddleware = (req, res, next) => {
       res.status(500).json({ message: 'Error uploading to S3' });
     } else {
       req.s3Url = data.Location; // Attach S3 URL to the request object
-      //d2ykmt6l7yk0wq.cloudfront.net
       req.CFurl = `${process.env.cloudFrontUrl}/${fileName}`;
-      console.log('lien cloudfornt:', process.env.cloudFrontUrl);
 
       deleteFileFromStorage(filePath);
+
       next(); // Proceed to the next middleware or route handler
     }
   });

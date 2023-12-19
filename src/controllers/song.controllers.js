@@ -11,12 +11,15 @@ const songController = {
   createSong: async (req, res) => {
     console.log('createSong()'.cyan);
 
-    const { title, releaseDate, album, artist, coverImage } = req.body;
+    const { title, releaseDate, album, artist, coverImage, duration } = req.body;
+
+    console.log('duration', duration)
+    
     const newSong = new Song({
       title,
       // autor,
       releaseDate,
-      duration: 180, //TODO: calculer la durée de la chanson
+      duration: duration || 180,
       url: req.s3Url, // Use the S3 URL from the request object
       coverImage,
       album: album || null,
