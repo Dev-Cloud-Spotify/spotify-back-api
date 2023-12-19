@@ -14,5 +14,6 @@ router.get('/countNumberOfPlaylists', playlistController.countNumberOfPlaylists)
 router.get('/createPlaylistAllSongs', playlistController.createPlaylistAllSongs);
 router.get('/getAllSongsPlaylist', playlistController.getAllSongsPlaylist);
 router.get('/getRecentsPlaylist', playlistController.getRecentsPlaylist);
+router.get('/getLikedSongsPlaylist', playlistController.getLikedSongsPlaylist);
 export default router;
 

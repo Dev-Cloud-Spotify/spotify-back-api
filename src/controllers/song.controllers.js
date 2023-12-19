@@ -1,5 +1,6 @@
 //Exemple controller
 import Album from '../models/album.models.js';
+import Playlist from '../models/playlist.models.js';
 import Song from '../models/song.models.js';
 
 const songController = {
@@ -170,6 +171,35 @@ const songController = {
     try {
       const song = await Song.findById(req.params.id);
       song.liked = !song.liked;
+      await song.save();
+
+      const playlist = await Playlist.findOne({ title: 'Liked Songs' })
+      //create playlist if not exist
+      if (!playlist) {
+        return res.json(song);
+      }
+        //push or pull song to playlist in first position
+      if (song.liked) {
+        playlist.songs.unshift(song._id);
+      }
+      else {
+        playlist.songs.pull(song._id);
+      }
+      await playlist.save();
+        
+
+      res.json(song);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
+  //Increments the number of listens of a song
+  incrementListens: async (req, res) => {
+    console.log('incrementListens()'.cyan);
+    try {
+      const song = await Song.findById(req.params.id);
+      song.listens++;
       await song.save();
       res.json(song);
     } catch (error) {
