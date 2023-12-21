@@ -68,18 +68,35 @@ const API=`
 `
 
 //sockets
+//connect socket
 io.on('connection', (socket) => {
   console.log('A user connected'.bgGreen.black);
 
+  //change track
   socket.on('changeTrack', (data) => {
     console.log('Received changeTrack:');
     io.emit('changeTrack', data);
   });
-  socket.on('shareListenning', (data) => {
-    console.log('shareListenning !');
-    io.emit('shareListenning', data);
+
+  //change playlist
+  socket.on('changePlaylist', (data) => {
+    console.log('changePlaylist !');
+    io.emit('changePlaylist', data);
   });
 
+  //changeIsPlaying
+  socket.on('changeIsPlaying', (data) => {
+    console.log('changeIsPlaying !');
+    io.emit('changeIsPlaying', data);
+  });
+
+  //changeTime
+  socket.on('changeTime', (data) => {
+    console.log('changeTime !');
+    io.emit('changeTime', data);
+  });
+
+  //disconnect socket
   socket.on('disconnect', () => {
     console.log('User disconnected'.bgRed.black);
   });
