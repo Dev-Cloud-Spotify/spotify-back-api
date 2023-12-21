@@ -6,7 +6,8 @@ import cors from 'cors';
 
 import multer from 'multer';
 
-const upload = multer();
+import http from 'http';
+import socketIO from 'socket.io';
 
 dotenv.config();
 
@@ -15,11 +16,23 @@ import router from './routes/router.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
+const server = http.createServer(app);
+const io = socketIO(server, {
+  cors: {
+    origin: '*', 
+    methods: ['GET', 'POST'],
+  },
+});
 
 app.use(express.json());
 app.use(bodyParser.json([]));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors(
+  // {
+  //   origin: '*',
+  //   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  // }
+));
 
 const cluster = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority`
 
@@ -54,7 +67,25 @@ const API=`
 ╚═╝  ╚═╝╚═╝     ╚═╝
 `
 
-app.listen(port, () => {
+//sockets
+io.on('connection', (socket) => {
+  console.log('A user connected'.bgGreen.black);
+
+  socket.on('changeTrack', (data) => {
+    console.log('Received changeTrack:');
+    io.emit('changeTrack', data);
+  });
+  socket.on('shareListenning', (data) => {
+    console.log('shareListenning !');
+    io.emit('shareListenning', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected'.bgRed.black);
+  });
+});
+
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`.magenta);
   console.log(spotify.green)
   console.log(API.yellow)
