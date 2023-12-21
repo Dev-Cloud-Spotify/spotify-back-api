@@ -1,11 +1,16 @@
+import { signJwt } from '../helpers/signJwt.js';
 import User from '../models/user.models.js';
+import bcrypt from 'bcrypt';
+
 
 const userController = {
     createUser : async (req, res) => {
     console.log('createUser()'.cyan)
     try {
-        const { username, password } = req.body;
-        const newuser = new User({ username, password });
+        const { username } = req.body;
+        const password1= req.body.password;
+         const password= bcrypt.hashSync(password1, 10)
+        const newuser = new User({ username, password, isAdmin : true});
         const saveduser = await newuser.save();
         res.status(201).json(saveduser);
     } catch (error) {
@@ -53,5 +58,41 @@ const userController = {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     },
+    //Login with username and password
+    
+    login: async (req, res) => {
+        console.log('login()'.cyan)
+        const {password}  = req.body;
+        await User.findOne({ username: req.body.username })
+      .then((user) => {
+        if (!user) {
+          return res.send({
+            message: "User not found",
+            auth: false
+          })
+        }
+        let isPasswordValid = bcrypt.compareSync(password, user.password);
+        if (!isPasswordValid) {
+          return res.send({
+            message: "Password is not valid",
+            auth: false
+          })
+        }
+        const userToken = signJwt({
+          id: user._id,
+          isAdmin: user.isAdmin
+        }, process.env.JWT_SECRET)
+  
+        res.send({
+          auth:true,
+          message:"User logged",
+          token: userToken
+        })
+  
+      })
+      .catch((err) => {
+        res.status(400).send(err);
+      })
+  },
 };
 export default userController;
