@@ -1,5 +1,6 @@
 //Exemple controller
 import Album from '../models/album.models.js';
+import Playlist from '../models/playlist.models.js';
 import Song from '../models/song.models.js';
 
 const songController = {
@@ -10,12 +11,15 @@ const songController = {
   createSong: async (req, res) => {
     console.log('createSong()'.cyan);
 
-    const { title, releaseDate, album, artist, coverImage } = req.body;
+    const { title, releaseDate, album, artist, coverImage, duration } = req.body;
+
+    console.log('duration', duration)
+    
     const newSong = new Song({
       title,
       // autor,
       releaseDate,
-      duration: 180, //TODO: calculer la durée de la chanson
+      duration: duration || 180,
       url: req.s3Url, // Use the S3 URL from the request object
       coverImage,
       album: album || null,
@@ -160,6 +164,48 @@ const songController = {
       res.json({ numberOfListens });
     } catch (error) {
       console.log(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
+  //liked the songs
+  likeSong: async (req, res) => {
+    console.log('likeSong()'.cyan);
+    try {
+      const song = await Song.findById(req.params.id);
+      song.liked = !song.liked;
+      await song.save();
+
+      const playlist = await Playlist.findOne({ title: 'Liked Songs' })
+      //create playlist if not exist
+      if (!playlist) {
+        return res.json(song);
+      }
+        //push or pull song to playlist in first position
+      if (song.liked) {
+        playlist.songs.unshift(song._id);
+      }
+      else {
+        playlist.songs.pull(song._id);
+      }
+      await playlist.save();
+        
+
+      res.json(song);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
+  //Increments the number of listens of a song
+  incrementListens: async (req, res) => {
+    console.log('incrementListens()'.cyan);
+    try {
+      const song = await Song.findById(req.params.id);
+      song.listens++;
+      await song.save();
+      res.json(song);
+    } catch (error) {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   },

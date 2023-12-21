@@ -141,7 +141,48 @@ const playlistController = {
       getAllSongsPlaylist: async (req, res) => {
         console.log('getAllSongsPlaylist()'.cyan);
         try {
-          const playlist = await Playlist.findOne({ title: 'All Songs' }).populate('songs');
+            const songs = await Song.find();
+            const playlist = await Playlist.findOne({ title: 'All Songs' })
+            if (!playlist) {
+                const newPlaylist = new Playlist({ title: 'All Songs', songs: songs });
+                await newPlaylist.save();
+                return res.json(newPlaylist);
+            }
+          //push all non push songs in database to AllSongs playlist
+            songs.forEach(async (song) => {
+                if (!playlist.songs.includes(song._id)) {
+                playlist.songs.push(song._id);
+                }
+            });
+            await playlist.save();
+            
+          //update playlist updatedAt
+            playlist.updatedAt = Date.now();
+          res.json(playlist);
+        } catch (error) {
+          res.status(500).json({ message: error.message });
+        }
+      },
+
+      getLikedSongsPlaylist: async (req, res) => {
+        console.log('getLikedSongsPlaylist()'.cyan);
+        try {
+            const songs = await Song.find();
+            const likedSongs = songs.filter(song => song.liked === true);
+            const playlist = await Playlist.findOne({ title: 'Liked Songs' })
+            if (!playlist) {
+                const newPlaylist = new Playlist({ title: 'Liked Songs', songs: likedSongs });
+                await newPlaylist.save();
+                return res.json(newPlaylist);
+            }
+          //push all non push songs in database to AllSongs playlist
+            songs.forEach(async (song) => {
+                if (!playlist.songs.includes(song._id)) {
+                playlist.songs.push(song._id);
+                }
+            });
+            await playlist.save();
+            
           //update playlist updatedAt
             playlist.updatedAt = Date.now();
           res.json(playlist);
