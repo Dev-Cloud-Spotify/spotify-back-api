@@ -7,7 +7,7 @@ import cors from 'cors';
 import multer from 'multer';
 
 import http from 'http';
-import socketIO from 'socket.io';
+import { Server } from 'socket.io';
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ import router from './routes/router.js';
 const app = express();
 const port = process.env.PORT || 3000;
 const server = http.createServer(app);
-const io = socketIO(server, {
+const io = new Server(server, {
   cors: {
     origin: '*', 
     methods: ['GET', 'POST'],

@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import ffmpeg from 'fluent-ffmpeg';
-const { getAudioDurationInSeconds } = require('get-audio-duration')
+import { getAudioDurationInSeconds } from 'get-audio-duration';
 dotenv.config();
 
 AWS.config.update({
@@ -87,4 +87,4 @@ const deleteFileFromStorage = (filePath) => {
   });
 };
 
-module.exports = uploadAWSMiddleware;
+export default uploadAWSMiddleware;

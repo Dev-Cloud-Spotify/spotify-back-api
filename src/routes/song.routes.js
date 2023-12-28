@@ -1,10 +1,12 @@
 import express from 'express';
 const router = express.Router();
 import songController from '../controllers/song.controllers';
-import uploadAWSMiddleware from '../middlewares/uploadAWS.middlewares';
 
 import multer from 'multer';
-const fs = require('fs');
+import uploadAWSMiddleware from '../middlewares/uploadAWS.middlewares';
+
+import fs from 'fs';
+
 // Function to create the uploads directory if it doesn't exist
 const createUploadsDirectory = () => {
     const directory = './src/uploads/';

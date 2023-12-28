@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 function verifyToken(req, res, next) {
   console.log('verifyToken()'.yellow);
@@ -25,4 +26,4 @@ function verifyToken(req, res, next) {
   });
 }
 
-module.exports = verifyToken;
+export default verifyToken;
