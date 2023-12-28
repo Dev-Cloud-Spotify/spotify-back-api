@@ -1,12 +1,11 @@
 {
   "name": "spotify-back-api",
-  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/index.js",
-    "dev": "nodemon --exec babel-node ./src/index.js"
+    "start": "node ./api/index.js",
+    "dev": "nodemon --exec babel-node ./api/index.js"
   },
   "keywords": [],
   "author": "",
