@@ -12,7 +12,7 @@ import { Server } from 'socket.io';
 dotenv.config();
 
 import '@colors/colors';
-import router from '../src/routes/router.js';
+import router from './src/routes/router'
 
 const app = express();
 const port = process.env.PORT || 3000;
