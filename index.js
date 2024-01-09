@@ -102,6 +102,10 @@ io.on('connection', (socket) => {
   });
 });
 
+app.get('/', (req, res) => {
+  res.send('Spotify-back-api !');
+});
+
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`.magenta);
   console.log(spotify.green)

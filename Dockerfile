@@ -10,6 +10,8 @@ COPY package-lock.json .
 
 # Install dependencies
 RUN npm install
+RUN npm install -g nodemon
+
 
 # Copy the rest of the application code
 COPY . .
@@ -18,4 +20,4 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to run your app
-CMD ["node", "--experimental-specifier-resolution=node", "./src/index.js"]
+CMD ["npm", "start"]

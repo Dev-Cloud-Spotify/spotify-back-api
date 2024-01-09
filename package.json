@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./index.js",
+    "start": "nodemon --exec babel-node ./index.js",
     "dev": "nodemon --exec babel-node ./index.js"
   },
   "keywords": [],
@@ -17,6 +17,7 @@
     "@colors/colors": "^1.6.0",
     "aws-sdk": "^2.1497.0",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",

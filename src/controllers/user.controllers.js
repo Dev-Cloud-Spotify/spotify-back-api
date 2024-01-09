@@ -1,6 +1,6 @@
 import { signJwt } from '../helpers/signJwt.js';
 import User from '../models/user.models.js';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 
 const userController = {
