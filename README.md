@@ -23,3 +23,4 @@ Si possible avoir une petite revu du code sur:
 - Ce que l'on auraient pu mieux optimisé (les grosses fonctions / fonctionnalités)
 - L'architecture et structure du code
 - Autres (si vous avez d'autres remarques)
+
