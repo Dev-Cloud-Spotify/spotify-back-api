@@ -37,6 +37,14 @@ const playlistController = {
     getPlaylistById: async (req, res) => {
         console.log('getPlaylistById()'.cyan);
         try {
+          const checkPlaylist = await Playlist.findById(req.params.id)
+          //if title = "Last Listens" or "Most Listened Songs" or "Liked Songs" => update playlist
+          if(checkPlaylist.title === "Last Listens") {
+            await createLastListensPlaylist();
+          }
+          if(checkPlaylist.title === "Most Listened Songs") {
+            await createMostListenedSongsPLaylist();
+          }
             //populate artist and album in song
             const playlist = await Playlist.findById(req.params.id)
             .populate({
@@ -46,6 +54,8 @@ const playlistController = {
                   { path: 'album', model: 'Album' },
                 ],
               });
+
+
             res.json(playlist);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -225,19 +235,19 @@ const createLastListensPlaylist = async () => {
     console.log('createLastListensPlaylist()'.cyan);
     //if playlist title "Last Listens" exists, delete it
     const playlist = await Playlist.findOne({ title: 'Last Listens' });
-    if (playlist) {
-      await Playlist.findByIdAndDelete(playlist._id);
-    }
-    //créer playlist "Last Listens" avec les 20 dernières chansons écoutées
     const songs = await Song.find().sort({ updatedAt: -1 }).limit(20);
-    const newPlaylist = new Playlist({ title: 'Last Listens', songs });
-    await newPlaylist.save();
 
-    //update playlist updatedAt
-    newPlaylist.updatedAt = Date.now();
-    await newPlaylist.save();
+    if (!playlist) {
+      const newPlaylist = new Playlist({ title: 'Last Listens', songs });
+      newPlaylist.updatedAt = Date.now();
+      await newPlaylist.save();
+      return newPlaylist;
+    }
 
-    return newPlaylist;
+    playlist.songs = songs;
+    await playlist.save();
+
+    return playlist;
     } catch (error) {
     console.error('Error in createLastListensPlaylist:', error);
     throw error; // rethrow the error to be caught in the getPlaylists catch block
@@ -250,19 +260,19 @@ const createMostListenedSongsPLaylist = async () => {
     console.log('createMostListenedSongsPLaylist()'.cyan);
     //if playlist title "Most Listened Songs" exists, delete it
     const playlist = await Playlist.findOne({ title: 'Most Listened Songs' });
-    if (playlist) {
-      await Playlist.findByIdAndDelete(playlist._id);
-    }
-    //créer playlist "Most Listened Songs" avec les 20 chansons les plus écoutées
     const songs = await Song.find().sort({ listens: -1 }).limit(20);
-    const newPlaylist = new Playlist({ title: 'Most Listened Songs', songs });
-    await newPlaylist.save();
 
-    //update playlist updatedAt
-    newPlaylist.updatedAt = Date.now();
-    await newPlaylist.save();
+    if (!playlist) {
+      const newPlaylist = new Playlist({ title: 'Most Listened Songs', songs });
+      newPlaylist.updatedAt = Date.now();
+      await newPlaylist.save();
+      return newPlaylist;
+    }
 
-    return newPlaylist;
+    playlist.songs = songs;
+    await playlist.save();
+
+    return playlist;
     } catch (error) {
     console.error('Error in createMostListenedSongsPLaylist:', error);
     throw error; // rethrow the error to be caught in the getPlaylists catch block
