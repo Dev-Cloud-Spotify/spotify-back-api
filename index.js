@@ -28,10 +28,10 @@ app.use(express.json());
 app.use(bodyParser.json([]));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(
-  // {
-  //   origin: '*',
-  //   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  // }
+  {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  }
 ));
 
 const cluster = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority`
