@@ -23,3 +23,5 @@ Si possible avoir une petite revu du code sur:
 - L'architecture et structure du code
 - Autres (si vous avez d'autres remarques)
 
+Demande 2:
+Si possible prendre en compte la présentation AWS de Koceila devant la classe.
