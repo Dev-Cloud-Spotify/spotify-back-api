@@ -22,3 +22,6 @@ Si possible avoir une petite revu du code sur:
 - Ce que l'on aurait pu mieux optimiser (les grosses fonctions / fonctionnalités)
 - L'architecture et structure du code
 - Autres (si vous avez d'autres remarques)
+
+**Demande 2 :**
+-Prière de bien vouloir prendre en compte -comme initialement prévu- le bonus de 3points suite à la présentation des bases d'AWS à l'ensemble de la promotion.
