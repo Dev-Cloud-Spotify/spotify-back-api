@@ -24,10 +24,6 @@ const io = new Server(server, {
   },
 });
 
-app.use(express.json());
-app.use(bodyParser.json([]));
-app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(cors(
   {
     origin: ['http://server.thomas-jan.fr', 'http://spotify-front-end.thomas-jan.fr', 'http://localhost:8080'],
@@ -36,6 +32,11 @@ app.use(cors(
     credentials: true,
   }
 ));
+
+app.use(express.json());
+app.use(bodyParser.json([]));
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 const cluster = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority`
 
