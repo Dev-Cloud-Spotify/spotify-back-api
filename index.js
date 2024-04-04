@@ -19,17 +19,15 @@ const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ['http://server.thomas-jan.fr', 'http://spotify-front-end.thomas-jan.fr', 'http://localhost:8080'], 
+    origin: ['http://server.thomas-jan.fr', 'http://spotify-front-end.thomas-jan.fr'], 
     methods: ['GET', 'POST'],
   },
 });
 
 app.use(cors(
   {
-    origin: ['http://server.thomas-jan.fr', 'http://spotify-front-end.thomas-jan.fr', 'http://localhost:8080'],
+    origin: ['http://server.thomas-jan.fr', 'http://spotify-front-end.thomas-jan.fr'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
   }
 ));
 
