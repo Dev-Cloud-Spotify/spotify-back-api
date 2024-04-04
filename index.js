@@ -19,7 +19,7 @@ const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: '*', 
+    origin: ['http://server.thomas-jan.fr', 'http://spotify-front-end.thomas-jan.fr', 'http://localhost:8080'], 
     methods: ['GET', 'POST'],
   },
 });
@@ -27,9 +27,11 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(bodyParser.json([]));
 app.use(bodyParser.urlencoded({ extended: true }));
+// Access to XMLHttpRequest at 'http://server.thomas-jan.fr:3000/api/playlists/getPlaylists' from origin 'http://spotify-front-end.thomas-jan.fr' has been blocked by CORS policy: The request client is not a secure context and the resource is in more-private address space `private`.
+// 961-ec5b51390fe143f1.js:1 M
 app.use(cors(
   {
-    origin: '*',
+    origin: ['http://server.thomas-jan.fr', 'http://spotify-front-end.thomas-jan.fr', 'http://localhost:8080'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   }
 ));
