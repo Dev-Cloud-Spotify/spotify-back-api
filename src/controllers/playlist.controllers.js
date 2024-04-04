@@ -36,6 +36,7 @@ const playlistController = {
     //get playlist by id
     getPlaylistById: async (req, res) => {
         console.log('getPlaylistById()'.cyan);
+        
         try {
           const checkPlaylist = await Playlist.findById(req.params.id)
           //if title = "Last Listens" or "Most Listened Songs" or "Liked Songs" => update playlist
