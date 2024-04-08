@@ -19,14 +19,26 @@ const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ['http://server.thomas-jan.fr', 'http://spotify-front-end.thomas-jan.fr', 'http://spotify-back-office.thomas-jan.fr'], 
+    origin: [
+      'http://server.thomas-jan.fr',
+      'http://spotify-front-end.thomas-jan.fr', 
+      'http://spotify-back-office.thomas-jan.fr', 
+      'https://spotify-front-end.thomas-jan.fr', 
+      'https://spotify-back-office.thomas-jan.fr',
+    ],
     methods: ['GET', 'POST'],
   },
 });
 
 app.use(cors(
   {
-    origin: ['http://server.thomas-jan.fr', 'http://spotify-front-end.thomas-jan.fr', 'http://spotify-back-office.thomas-jan.fr'],
+    origin: [
+      'http://server.thomas-jan.fr', 
+      'http://spotify-front-end.thomas-jan.fr', 
+      'http://spotify-back-office.thomas-jan.fr',
+      'https://spotify-front-end.thomas-jan.fr',
+      'https://spotify-back-office.thomas-jan.fr',
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   }
 ));
